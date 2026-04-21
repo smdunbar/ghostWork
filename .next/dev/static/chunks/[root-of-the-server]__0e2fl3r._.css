@@ -1428,6 +1428,9 @@
   .justify-items-start {
     justify-items: start;
   }
+  .justify-end {
+    justify-content: flex-end;
+  }
 
   .gap-0\.5 {
     gap: calc(var(--spacing) * .5);

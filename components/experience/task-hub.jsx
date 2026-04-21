@@ -10,12 +10,12 @@ export default function TaskHub({ onClaimTask, taskCompleted, onEndShift }) {
       <div className="max-w-5xl mx-auto px-6 pt-4">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#19c093]" />
-            <span className="font-medium text-[#000000]">Ghost Work</span>
+             <img src="/logo.png" alt="Ghost Work Logo" className="h-8 w-8" />
+            <span className="font-medium text-xl text-[#000000]">Ghost Work</span>
           </div>
           <button
             onClick={onEndShift}
-            className="text-sm text-[#d44d5c] hover:text-[#b33d4a] font-medium transition-colors"
+            className="text-lg text-white bg-[#d44d5c] hover:bg-[#b33d4a] font-medium transition-colors px-8 py-2 rounded-full inline-flex items-center gap-2"
           >
             End your shift
           </button>

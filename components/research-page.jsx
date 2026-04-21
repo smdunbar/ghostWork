@@ -3,7 +3,7 @@
 export default function ResearchPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
-      <h1 className="text-[#19c093] font-bold text-xl mb-2">
+      <h1 className="text-[#d44d5c] font-bold text-2xl mb-2">
         Write-Up on Design Logic and Choices
       </h1>
       <p className="text-xs text-[#828282] mb-8">

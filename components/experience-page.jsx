@@ -33,13 +33,13 @@ export default function ExperiencePage({ onNavigate }) {
   }
 
   const handleEndShift = () => {
-    setState("welcome")
     setTaskCompleted(false)
+    onNavigate("home")
   }
 
   switch (state) {
     case "warning":
-      return <ContentWarning onContinue={() => setState("welcome")} />
+      return <ContentWarning onContinue={() => setState("welcome")} onReturn={() => onNavigate("home")} />
     case "welcome":
       return <WelcomeScreen onStartShift={handleStartShift} />
     case "transition":
@@ -62,6 +62,6 @@ export default function ExperiencePage({ onNavigate }) {
     case "summary":
       return <TaskSummary onReturnToHub={handleReturnToHub} />
     default:
-      return <ContentWarning onContinue={() => setState("welcome")} />
+      return <ContentWarning onContinue={() => setState("welcome")} onReturn={() => onNavigate("home")} />
   }
 }
