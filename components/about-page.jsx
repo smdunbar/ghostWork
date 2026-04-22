@@ -20,11 +20,11 @@ export default function AboutPage() {
        
           <div  className="flex items-start gap-16">
             {/* Placeholder Avatar */}
-            <img src="avery.jpeg" alt="Avery Avatar" className="w-64 h-72 bg-[#f2f2f2] rounded-lg object-cover flex-shrink-0 shadow-lg border-5 border-[#f3b700]" />
+            <img src="avery.jpg" alt="Avery Avatar" className="w-64 h-72 bg-[#f2f2f2] rounded-lg object-cover object-bottom flex-shrink-0 shadow-lg border-5 border-[#f3b700]" />
             
             <div className="pt-2">
               <h2 className="font-medium text-[#000000] mb-1">{"Avery Espiritu"}</h2>
-              <p className="text-sm text-[#666666]">{"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at odio non ligula eleifend scelerisque. Suspendisse nec rhoncus purus. Quisque efficitur nulla urna, sed interdum quam accumsan non. Nullam dictum felis sit amet consectetur lacinia. Suspendisse orci dui"}</p>
+              <p className="text-sm text-[#666666]">{"Hi, I’m Avery and I'm a student at Brown University studying Computer Science. I'm passionate about socially responsible technology and creating user-centered experiences. I mainly have experience in Python and JavaScript, particularly in building full-stack and AI-driven applications. I have been able to lead the development of several production features in past roles at a edtech startup, plus worked as a UTA-STA for Brown's Foundations of AI course. I'm excited to have the opportunity to explore the data worker experience through this project, and hope you all enjoy it!"}</p>
             </div>
           </div>
           <div  className="flex justify-end items-center gap-16">
