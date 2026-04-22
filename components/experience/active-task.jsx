@@ -1,20 +1,44 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
+import { useActiveTask } from "@/hooks/ActiveTaskContext"
 
 const sampleTexts = [
-  "@ $! @respondents: No woman you shouldn't complain about cleaning up your house. Gahyg, do a thron.",
-  "another one",
-  "This is actually a legitimate comment about the weather today.",
-  "Some people just don't understand basic decency anymore smh",
-  "Great job on the presentation yesterday! Really loved the insights.",
+  {"text": "@ $! @respondents: No woman you shouldn't complain about cleaning up your house. Gahyg, do a thron.", 
+    "label": "hate_speech"},
+  {"text": "another one", 
+    "label": "offensive"},
+  {"text": "This is actually a legitimate comment about the weather today.", 
+    "label": "neither"},
+  {"text": "Some people just don't understand basic decency anymore smh", 
+    "label": "offensive"},
+  {"text": "Great job on the presentation yesterday! Really loved the insights.", 
+    "label": "neither"}
 ]
 
 export default function ActiveTask({ onComplete, onEndShift }) {
-  const [currentTextIndex, setCurrentTextIndex] = useState(0)
-  const [timeElapsed, setTimeElapsed] = useState(0)
-  const [earned, setEarned] = useState(0)
-  const [judgmentsMade, setJudgmentsMade] = useState(0)
+  const {
+    currentTextIndex,
+    setCurrentTextIndex,
+    timeElapsed,
+    setTimeElapsed,
+    earned,
+    setEarned,
+    judgmentsMade,
+    setJudgmentsMade,
+    accuracy,
+    setAccuracy,
+    hateSpeechCount,
+    setHateSpeechCount,
+    offensiveCount,
+    setOffensiveCount,
+    neitherCount,
+    setNeitherCount,
+    finalTime,
+    setFinalTime,
+  } = useActiveTask()
+  const totalJudgments = sampleTexts.length
+
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -29,10 +53,29 @@ export default function ActiveTask({ onComplete, onEndShift }) {
     return `0:${mins}:${secs.toString().padStart(2, "0")}`
   }
 
-  const handleClassify = (classification) => {
-    const earningPerJudgment = 0.0314 // ~$0.11 for 3.5 judgments
+  const handleClassify = (classification, trueLabel) => {
+    const earningPerJudgment = 0.03
+    const newJudgmentCount = judgmentsMade + 1
+    
     setEarned((prev) => prev + earningPerJudgment)
     setJudgmentsMade((prev) => prev + 1)
+    
+    if (classification === trueLabel) {
+      setAccuracy((prev) => (prev * judgmentsMade + 1) / newJudgmentCount)
+    } else {
+      setAccuracy((prev) => (prev * judgmentsMade) / newJudgmentCount)
+    }
+    switch (classification) {
+      case "hate_speech":
+        setHateSpeechCount((prev) => prev + 1)
+        break
+      case "offensive":
+        setOffensiveCount((prev) => prev + 1)
+        break
+      case "neither":
+        setNeitherCount((prev) => prev + 1)
+        break
+    }
 
     if (currentTextIndex < sampleTexts.length - 1) {
       setCurrentTextIndex((prev) => prev + 1)
@@ -87,7 +130,7 @@ export default function ActiveTask({ onComplete, onEndShift }) {
       <div className="max-w-3xl mx-auto px-6 mb-8">
         <div className="bg-[#f2f2f2] rounded-lg p-8 min-h-[150px] flex items-center justify-center">
           <p className="text-sm text-center text-[#000000]">
-            {sampleTexts[currentTextIndex]}
+            {sampleTexts[currentTextIndex].text}
           </p>
         </div>
       </div>
@@ -96,19 +139,19 @@ export default function ActiveTask({ onComplete, onEndShift }) {
       <div className="max-w-3xl mx-auto px-6">
         <div className="flex items-center justify-center gap-4">
           <button
-            onClick={() => handleClassify("hate_speech")}
+            onClick={() => handleClassify("hate_speech", sampleTexts[currentTextIndex].label)}
             className="px-6 py-2 border border-[#d9d9d9] rounded text-sm hover:bg-[#f2f2f2] transition-colors"
           >
             hate speech
           </button>
           <button
-            onClick={() => handleClassify("offensive")}
+            onClick={() => handleClassify("offensive", sampleTexts[currentTextIndex].label)}
             className="px-6 py-2 border border-[#d9d9d9] rounded text-sm hover:bg-[#f2f2f2] transition-colors"
           >
             offensive
           </button>
           <button
-            onClick={() => handleClassify("neither")}
+            onClick={() => handleClassify("neither", sampleTexts[currentTextIndex].label)}
             className="px-6 py-2 border border-[#d9d9d9] rounded text-sm hover:bg-[#f2f2f2] transition-colors"
           >
             neither

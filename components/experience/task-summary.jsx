@@ -1,8 +1,17 @@
 "use client"
 
 import { ArrowRight } from "lucide-react"
+import { useActiveTask } from "@/hooks/ActiveTaskContext"
 
 export default function TaskSummary({ onReturnToHub }) {
+  const { timeElapsed, earned, judgmentsMade, hateSpeechCount, offensiveCount, neitherCount, accuracy } = useActiveTask()
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins}:${secs.toString().padStart(2, "0")}`
+  }
+  
   return (
     <div className="min-h-[calc(100vh-73px)] bg-white">
       {/* Header */}
@@ -20,15 +29,15 @@ export default function TaskSummary({ onReturnToHub }) {
         {/* Top Stats Row */}
         <div className="flex items-start gap-8 mb-8">
           <div>
-            <div className="text-4xl font-bold">30</div>
+            <div className="text-4xl font-bold">{judgmentsMade}</div>
             <div className="text-xs text-[#828282]">questions answered</div>
           </div>
           <div>
-            <div className="text-4xl font-bold font-mono text-[#19c093]">0:05:31</div>
+            <div className="text-4xl font-bold font-mono text-[#19c093]">{formatTime(timeElapsed)}</div>
             <div className="text-xs text-[#828282]">time taken</div>
           </div>
           <div className="bg-[#d44d5c] text-white px-6 py-4 rounded">
-            <div className="text-3xl font-bold">$0.11</div>
+            <div className="text-3xl font-bold">${earned.toFixed(2)}</div>
             <div className="text-xs">earnings from task</div>
           </div>
         </div>
@@ -53,17 +62,18 @@ export default function TaskSummary({ onReturnToHub }) {
           <h3 className="font-bold text-sm mb-3">Label distribution</h3>
           <div className="flex items-center gap-8">
             <div>
-              <div className="text-3xl font-bold">12</div>
+              <div className="text-3xl font-bold">{hateSpeechCount}</div>
               <div className="text-xs text-[#828282]">hate speech</div>
             </div>
             <div>
-              <div className="text-3xl font-bold">10</div>
+              <div className="text-3xl font-bold">{offensiveCount}</div>
               <div className="text-xs text-[#828282]">offensive</div>
             </div>
             <div>
-              <div className="text-3xl font-bold">8</div>
+              <div className="text-3xl font-bold">{neitherCount}</div>
               <div className="text-xs text-[#828282]">neither</div>
             </div>
+          
           </div>
         </div>
 
