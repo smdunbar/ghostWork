@@ -31,16 +31,36 @@ export default function HomePage({ onNavigate }) {
       {/* Cards Section */}
       <div className="grid grid-cols-2 gap-6">
         <div className="border-5 border-[#d44d5c] bg-white rounded-lg p-6 shadow-lg">
+          <div className="flex items-center  gap-8 justify-evenly">
+            <div className="w-72">
           <h2 className="text-[#d44d5c] font-bold text-2xl mb-2">Research</h2>
           <p className="text-[#666666] text-lg">
             Explore the research and findings that informed the design of Ghost Work.
           </p>
+          </div>
+          <button
+              onClick={() => onNavigate("research")}
+              className="bg-[#d44d5c] text-white px-10 py-2 rounded-full text-lg font-medium hover:bg-[#b83d4a] transition-colors"
+            >
+              <ArrowRight className="inline-block ml-2" />
+            </button>
+            </div>
         </div>
         <div className="border-5 border-[#f3b700] bg-white rounded-xl p-6 shadow-lg">
+          <div className="flex items-center gap-8 justify-evenly">
+            <div className="w-72">
           <h2 className="text-[#f3b700] font-bold text-2xl mb-2">About</h2>
           <p className="text-[#666666] text-lg">
-            Learn more about the developers behind Ghost Work.
+            Like our work? Click here to learn more about the developers behind Ghost Work.
           </p>
+          </div>
+          <button
+              onClick={() => onNavigate("about")}
+              className="bg-[#f3b700] text-white px-10 py-2 rounded-full text-lg font-medium hover:bg-[#d4a600] transition-colors"
+            >
+              <ArrowRight className="inline-block ml-2" />
+            </button>
+            </div>
         </div>
       </div>
     </div>
