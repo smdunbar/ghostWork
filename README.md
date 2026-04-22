@@ -47,3 +47,4 @@ pnpm lint
 ### Troubleshooting
 - **Port already in use (3000)**: stop the other process, or run `pnpm dev --port 3001`.
 - **`Ignored build scripts: sharp...` warning during install**: safe to ignore for local dev here (images are configured as `unoptimized` in `next.config.mjs`). If you want to allow those scripts, run `pnpm approve-builds`.
+- **`git pull` blocked by `.next/...` files**: `.next/` is a generated build directory. It should not be committed. If you ever see this, delete the folder locally (`rm -rf .next`) and make sure `.gitignore` includes `.next/` (this repo does).
