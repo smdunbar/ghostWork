@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useActiveTask } from "@/hooks/ActiveTaskContext"
 
 function mulberry32(seed) {
   let t = seed >>> 0
@@ -129,12 +130,14 @@ export default function ActiveTask({ onComplete, onEndShift }) {
   const [loadError, setLoadError] = useState(null)
   const [deckInfo, setDeckInfo] = useState(null)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
-  const [timeElapsed, setTimeElapsed] = useState(0)
-  const [earned, setEarned] = useState(0)
-  const [judgmentsMade, setJudgmentsMade] = useState(0)
+  //const [timeElapsed, setTimeElapsed] = useState(0)
+ // const [earned, setEarned] = useState(0)
+ // const [judgmentsMade, setJudgmentsMade] = useState(0)
   const [labelCounts, setLabelCounts] = useState({ 0: 0, 1: 0, 2: 0 })
   const [repeatStats, setRepeatStats] = useState({ repeatsSeen: 0, repeatsConsistent: 0 })
   const [labelsByTaskId, setLabelsByTaskId] = useState({})
+  const { setTimeElapsed, timeElapsed, earned,setEarned, judgmentsMade,setJudgmentsMade, setHateSpeechCount, setOffensiveCount, setNeitherCount, setAccuracy } = useActiveTask()
+  
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -189,15 +192,33 @@ export default function ActiveTask({ onComplete, onEndShift }) {
 
   const currentItem = deckInfo?.deck?.[currentTextIndex] ?? null
 
+  // When all questions are answered, show summary
+  useEffect(() => {
+    if (deckInfo && currentTextIndex >= deckInfo.deck.length && deckInfo.deck.length > 0) {
+      onComplete?.({
+        total: deckInfo.deck.length,
+        earned,
+        judgmentsMade,
+        labelCounts,
+        repeatStats,
+        seed: deckInfo.seed,
+      })
+    }
+  }, [currentTextIndex, deckInfo, earned, judgmentsMade, labelCounts, repeatStats, onComplete])
+
   const handleClassify = (labelNum) => {
     if (!currentItem) return
+
+    if (labelNum === 0) setHateSpeechCount((prev) => prev + 1)
+    else if (labelNum === 1) setOffensiveCount((prev) => prev + 1)
+    else if (labelNum === 2) setNeitherCount((prev) => prev + 1)
 
     // Save label for this taskId
     setLabelsByTaskId((prev) => ({ ...prev, [currentItem.taskId]: labelNum }))
     setLabelCounts((prev) => ({ ...prev, [labelNum]: (prev[labelNum] ?? 0) + 1 }))
 
     const isCorrect = labelNum === currentItem.gold
-    const earningCorrect = 0.01
+    const earningCorrect = 0.015
     const earningIncorrect = 0.001
     setEarned((prev) => prev + (isCorrect ? earningCorrect : earningIncorrect))
     setJudgmentsMade((prev) => prev + 1)
@@ -213,32 +234,22 @@ export default function ActiveTask({ onComplete, onEndShift }) {
       })
     }
 
-    if (currentTextIndex < deckInfo.deck.length - 1) {
-      setCurrentTextIndex((prev) => prev + 1)
-    } else {
-      onComplete?.({
-        total: deckInfo.deck.length,
-        earned,
-        judgmentsMade: judgmentsMade + 1,
-        labelCounts,
-        repeatStats,
-        seed: deckInfo.seed,
-      })
-    }
+    // Always increment to signal completion
+    setCurrentTextIndex((prev) => prev + 1)
   }
 
   return (
-    <div className="min-h-[calc(100vh-73px)] bg-white">
+    <div className="min-h-[calc(100vh-73px)] bg-neutral-950">
       {/* Header with End Shift */}
-      <div className="max-w-3xl mx-auto px-6 pt-4">
+      <div className="max-w-3xl mx-auto px-6 pt-10">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#19c093]" />
-            <span className="font-medium text-[#000000]">Ghost Work</span>
+             <img src="/logo.png" alt="Ghost Work Logo" className="h-8 w-8" />
+            <span className="font-medium text-white">Ghost Work</span>
           </div>
           <button
             onClick={onEndShift}
-            className="text-sm text-[#d44d5c] hover:text-[#b33d4a] font-medium transition-colors"
+            className="text-sm text-red-500 hover:text-red-400 font-medium transition-colors"
           >
             End your shift
           </button>
@@ -249,37 +260,37 @@ export default function ActiveTask({ onComplete, onEndShift }) {
       <div className="max-w-3xl mx-auto px-6 mb-8">
         <div className="flex items-center gap-16">
           <div>
-            <div className={`text-2xl font-bold font-mono ${timeElapsed > 0 ? "text-[#19c093]" : "text-[#000000]"}`}>
+            <div className={`text-2xl font-bold font-mono ${timeElapsed > 0 ? "text-emerald-400" : "text-white"}`}>
               {formatTime(timeElapsed)}
             </div>
-            <div className="text-xs text-[#828282]">time elapsed</div>
+            <div className="text-xs text-neutral-400">time elapsed</div>
           </div>
           <div>
-            <div className="text-2xl font-bold font-mono">${earned.toFixed(2)}</div>
-            <div className="text-xs text-[#828282]">earned</div>
+            <div className="text-2xl font-bold font-mono text-white">${earned.toFixed(2)}</div>
+            <div className="text-xs text-neutral-400">earned</div>
           </div>
         </div>
       </div>
 
       {/* Task Instructions */}
       <div className="max-w-3xl mx-auto px-6 mb-6">
-        <p className="text-sm text-[#828282]">
+        <p className="text-sm text-neutral-400">
           Task: Label the below text under one of three categories
         </p>
       </div>
 
       {/* Text to Classify */}
       <div className="max-w-3xl mx-auto px-6 mb-8">
-        <div className="bg-[#f2f2f2] rounded-lg p-8 min-h-[150px] flex items-center justify-center">
+        <div className="bg-neutral-900 rounded-lg p-8 min-h-[150px] flex items-center justify-center">
           {loading ? (
-            <p className="text-sm text-center text-[#828282]">Loading task…</p>
+            <p className="text-sm text-center text-neutral-400">Loading task…</p>
           ) : loadError ? (
             <div className="text-sm text-center">
-              <div className="text-[#d44d5c] font-medium mb-2">Couldn’t load dataset</div>
-              <div className="text-[#828282]">{loadError}</div>
+              <div className="text-red-500 font-medium mb-2">Couldn't load dataset</div>
+              <div className="text-neutral-400">{loadError}</div>
             </div>
           ) : (
-            <p className="text-sm text-center text-[#000000]">{currentItem?.tweet}</p>
+            <p className="text-sm text-center text-neutral-200">{currentItem?.tweet}</p>
           )}
         </div>
       </div>
@@ -290,21 +301,21 @@ export default function ActiveTask({ onComplete, onEndShift }) {
           <button
             onClick={() => handleClassify(0)}
             disabled={loading || !!loadError}
-            className="px-6 py-2 border border-[#d9d9d9] rounded text-sm hover:bg-[#f2f2f2] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 border border-neutral-700 rounded text-sm text-neutral-200 hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             hate speech
           </button>
           <button
             onClick={() => handleClassify(1)}
             disabled={loading || !!loadError}
-            className="px-6 py-2 border border-[#d9d9d9] rounded text-sm hover:bg-[#f2f2f2] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 border border-neutral-700 rounded text-sm text-neutral-200 hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             offensive
           </button>
           <button
             onClick={() => handleClassify(2)}
             disabled={loading || !!loadError}
-            className="px-6 py-2 border border-[#d9d9d9] rounded text-sm hover:bg-[#f2f2f2] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 border border-neutral-700 rounded text-sm text-neutral-200 hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             neither
           </button>
@@ -313,7 +324,7 @@ export default function ActiveTask({ onComplete, onEndShift }) {
 
       {/* Progress indicator */}
       <div className="max-w-3xl mx-auto px-6 mt-8">
-        <div className="text-center text-xs text-[#828282]">
+        <div className="text-center text-xs text-neutral-400">
           {deckInfo?.deck?.length ? `${currentTextIndex + 1} of ${deckInfo.deck.length}` : "—"}
         </div>
       </div>

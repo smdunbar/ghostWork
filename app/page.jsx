@@ -26,8 +26,9 @@ export default function GhostWork() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-       <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
+    
+    <div className="min-h-screen bg-neutral-950">
+      {currentPage === "experience" ? null : <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />}
       <main>{renderPage()}</main>
     </div>
   )

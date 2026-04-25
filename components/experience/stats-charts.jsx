@@ -37,28 +37,28 @@ const satisfactionData = [
   { day: "Sun", value: 82 },
 ]
 
-const COLORS = ["#19c093", "#d9d9d9"]
+const COLORS = ["#10b981", "#525252"]
 
 export default function StatsCharts() {
   return (
     <div className="grid grid-cols-3 gap-6">
       {/* Judgments per Task */}
-      <div className="bg-[#f2f2f2] rounded-lg p-4">
-        <h3 className="text-xs font-medium text-[#828282] mb-3">Judgments per Task</h3>
+      <div className="bg-neutral-900 rounded-lg p-4">
+        <h3 className="text-xs font-medium text-neutral-400 mb-3">Judgments per Task</h3>
         <div className="h-32">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={judgmentsData}>
               <XAxis dataKey="name" tick={{ fontSize: 8 }} axisLine={false} tickLine={false} />
               <YAxis hide />
-              <Bar dataKey="value" fill="#19c093" radius={[2, 2, 0, 0]} />
+              <Bar dataKey="value" fill="#10b981" radius={[2, 2, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* Correct vs Incorrect */}
-      <div className="bg-[#f2f2f2] rounded-lg p-4">
-        <h3 className="text-xs font-medium text-[#828282] mb-3">Correct vs. Incorrect</h3>
+      <div className="bg-neutral-900 rounded-lg p-4">
+        <h3 className="text-xs font-medium text-neutral-400 mb-3">Correct vs. Incorrect</h3>
         <div className="h-32 flex items-center justify-center">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -79,19 +79,19 @@ export default function StatsCharts() {
         </div>
         <div className="flex justify-center gap-4 text-xs">
           <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-[#19c093]" />
-            <span className="text-[#828282]">Correct</span>
+            <div className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span className="text-neutral-400">Correct</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-[#d9d9d9]" />
-            <span className="text-[#828282]">Incorrect</span>
+            <div className="w-2 h-2 rounded-full bg-neutral-600" />
+            <span className="text-neutral-400">Incorrect</span>
           </div>
         </div>
       </div>
 
       {/* Client Satisfaction */}
-      <div className="bg-[#f2f2f2] rounded-lg p-4">
-        <h3 className="text-xs font-medium text-[#828282] mb-3">Client Satisfaction</h3>
+      <div className="bg-neutral-900 rounded-lg p-4">
+        <h3 className="text-xs font-medium text-neutral-400 mb-3">Client Satisfaction</h3>
         <div className="h-32">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={satisfactionData}>
@@ -100,7 +100,7 @@ export default function StatsCharts() {
               <Line 
                 type="monotone" 
                 dataKey="value" 
-                stroke="#19c093" 
+                stroke="#10b981" 
                 strokeWidth={2}
                 dot={false}
               />

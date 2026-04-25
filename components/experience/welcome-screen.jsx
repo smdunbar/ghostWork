@@ -41,7 +41,7 @@ glhf.`
   }, [isTypingComplete])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#1a1a1a]">
+    <div className="min-h-screen flex items-center justify-center bg-neutral-950">
       <div className="w-full px-8 justify-center flex">
         <div className="max-w-lg">
         <div className="text-white text-lg leading-relaxed whitespace-pre-line min-h-[200px]">
@@ -53,7 +53,7 @@ glhf.`
           <div className="flex justify-center mt-8">
             <button
               onClick={onStartShift}
-              className="inline-flex items-center gap-2 bg-[#19c093] text-white px-10 py-2 rounded-full text-lg font-medium hover:bg-[#17a882] transition-colors"
+              className="inline-flex items-center gap-2 bg-emerald-400 text-neutral-950 px-10 py-2 rounded-full text-lg font-medium hover:bg-emerald-300 transition-colors\"
             >
               Start your shift
               <ArrowRight className="w-4 h-4" />

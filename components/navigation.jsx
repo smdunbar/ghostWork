@@ -9,11 +9,11 @@ export default function Navigation({ currentPage, onNavigate }) {
   ]
 
   return (
-    <header className="border-b border-[#f2f2f2] bg-white">
+    <header className="border-b border-neutral-800 bg-neutral-950">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <img src="/logo.png" alt="Ghost Work Logo" className="h-8 w-8" />
-          <span className="font-medium text-[#000000] text-xl">Ghost Work</span>
+          <span className="font-medium text-white text-xl">Ghost Work</span>
         </div>
         <nav className="flex items-center gap-8">
           {navItems.map((item) => (
@@ -22,8 +22,8 @@ export default function Navigation({ currentPage, onNavigate }) {
               onClick={() => onNavigate(item.page)}
               className={`text-lg transition-colors ${
                 currentPage === item.page
-                  ? "text-[#19c093] font-medium"
-                  : "text-[#828282] hover:text-[#000000]"
+                  ? "text-emerald-400 font-medium"
+                  : "text-neutral-400 hover:text-white"
               }`}
             >
               {item.label}
