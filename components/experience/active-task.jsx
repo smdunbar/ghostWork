@@ -2,6 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { useActiveTask } from "@/hooks/ActiveTaskContext"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 function mulberry32(seed) {
   let t = seed >>> 0
@@ -125,7 +133,7 @@ function buildDeck(examples, { seed = Date.now(), uniqueCount = 25, repeatCount 
   return { seed, deck, uniqueCount: picked.length, repeatCount: repeats.length }
 }
 
-export default function ActiveTask({ onComplete, onEndShift }) {
+export default function ActiveTask({ onComplete, onEndShift, onReturnToHubWithTask }) {
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState(null)
   const [deckInfo, setDeckInfo] = useState(null)
@@ -136,8 +144,15 @@ export default function ActiveTask({ onComplete, onEndShift }) {
   const [labelCounts, setLabelCounts] = useState({ 0: 0, 1: 0, 2: 0 })
   const [repeatStats, setRepeatStats] = useState({ repeatsSeen: 0, repeatsConsistent: 0 })
   const [labelsByTaskId, setLabelsByTaskId] = useState({})
+  const [showCrash, setShowCrash] = useState(false)
   const { setTimeElapsed, timeElapsed, earned,setEarned, judgmentsMade,setJudgmentsMade, setHateSpeechCount, setOffensiveCount, setNeitherCount, setAccuracy } = useActiveTask()
-  
+  const randomCrash = Math.random() < 0.2 //20 percent crash rate
+
+  useEffect(() => {
+    if (randomCrash && !showCrash) {
+      setShowCrash(true)
+    }
+  }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -328,6 +343,21 @@ export default function ActiveTask({ onComplete, onEndShift }) {
           {deckInfo?.deck?.length ? `${currentTextIndex + 1} of ${deckInfo.deck.length}` : "—"}
         </div>
       </div>
+
+      {/* Crash Dialog */}
+      <AlertDialog open={showCrash}>
+        <AlertDialogContent className="bg-neutral-900 border-red-500">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-red-500">Application Crashed</AlertDialogTitle>
+            <AlertDialogDescription className="text-neutral-300">
+              Unfortunately, the application has encountered an error and must restart. Your progress has not been saved.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogAction onClick={onReturnToHubWithTask} className="bg-red-500 hover:bg-red-600">
+            Return to Task Hub
+          </AlertDialogAction>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

@@ -61,6 +61,8 @@ export default function TaskHub({ onClaimTask, taskCompleted, onEndShift }) {
             <div>
               <div className="font-medium text-sm">Hate Speech Classifications</div>
               <div className="text-xs text-neutral-400">Average Expected Time: 3 minutes</div>
+              <div className="text-xs text-neutral-400">Client: defNotX</div>
+
             </div>
             <button
               onClick={onClaimTask}

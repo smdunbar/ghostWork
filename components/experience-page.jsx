@@ -37,6 +37,14 @@ export default function ExperiencePage({ onNavigate }) {
     setTaskCompleted(false)
     onNavigate("home")
   }
+  const handleRedoTask = () => {
+    setTaskCompleted(false)
+    setState("activeTask")
+  }
+  const handleReturnToHubWithTask = () => {
+    setTaskCompleted(false)
+    setState("taskHub")
+  }
 
   const renderContent = () => {
     switch (state) {
@@ -59,10 +67,11 @@ export default function ExperiencePage({ onNavigate }) {
           <ActiveTask 
             onComplete={handleTaskComplete}
             onEndShift={handleEndShift}
+            onReturnToHubWithTask={handleReturnToHubWithTask}
           />
         )
       case "summary":
-        return <TaskSummary onReturnToHub={handleReturnToHub} />
+        return <TaskSummary onReturnToHub={handleReturnToHub} onRedoTask={handleRedoTask} />
       default:
         return <ContentWarning onContinue={() => setState("welcome")} onReturn={() => onNavigate("home")} />
     }
