@@ -6,6 +6,7 @@ import HomePage from "@/components/home-page"
 import ExperiencePage from "@/components/experience-page"
 import ResearchPage from "@/components/research-page"
 import AboutPage from "@/components/about-page"
+import StoriesPage from "@/components/stories-page"
 
 export default function GhostWork() {
   const [currentPage, setCurrentPage] = useState("home")
@@ -20,6 +21,8 @@ export default function GhostWork() {
         return <ResearchPage />
       case "about":
         return <AboutPage />
+      case "stories":
+        return <StoriesPage/>
       default:
         return <HomePage onNavigate={setCurrentPage} />
     }

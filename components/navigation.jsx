@@ -4,8 +4,10 @@ export default function Navigation({ currentPage, onNavigate }) {
   const navItems = [
     { label: "Home", page: "home" },
     { label: "Experience", page: "experience" },
+    { label: "Stories", page: "stories" },
     { label: "Research", page: "research" },
     { label: "About", page: "about" },
+    
   ]
 
   return (
