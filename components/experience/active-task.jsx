@@ -146,13 +146,15 @@ export default function ActiveTask({ onComplete, onEndShift, onReturnToHubWithTa
   const [labelsByTaskId, setLabelsByTaskId] = useState({})
   const [showCrash, setShowCrash] = useState(false)
   const { setTimeElapsed, timeElapsed, earned,setEarned, judgmentsMade,setJudgmentsMade, setHateSpeechCount, setOffensiveCount, setNeitherCount, setAccuracy } = useActiveTask()
-  const randomCrash = Math.random() < 0.2 //20 percent crash rate
-
+  const randomCrash = Math.random() < 1 //20 percent crash rate
+  const randomInt = Math.floor(Math.random() * 15) + 1; // add to random number 1 - 15 to 15 for random crash
+  
   useEffect(() => {
-    if (randomCrash && !showCrash) {
+    if (randomCrash && !showCrash && currentTextIndex >= 15 + randomInt) {
+      
       setShowCrash(true)
     }
-  }, [])
+  }, [currentTextIndex])
 
   useEffect(() => {
     const timer = setInterval(() => {
